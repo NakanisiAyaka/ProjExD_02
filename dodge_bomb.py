@@ -5,8 +5,8 @@ import pygame as pg
 
 WIDTH, HEIGHT = 1250, 680
 
-delta = {#3移動量辞書
-    pg.K_UP: (0, -5),#キー：横/縦
+delta = {  # 3移動量辞書
+    pg.K_UP: (0, -5),  # キー：横/縦
     pg.K_DOWN: (0, +5),
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (+5, 0)
@@ -26,7 +26,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
 
 def kokaton_rotate(kk_img: pg.Surface): 
     kk_imgs = {}
-    kk_mv = [(0, +5), (+5, +5), (+5, 0), (+5, -5), (0, -5), (-5, -5), (-5, 0), (-5, +5), (0, 0)]  # 移動量のタプルのリスト
+    kk_mv = [(0, +5), (+5, +5), (+5, 0), (+5, -5), (0, -5), (-5, -5), (-5, 0), (-5, +5), (0, 0)]
     angle = -90  
     flip = True
     for k in kk_mv[:8]:
@@ -52,13 +52,13 @@ def main():
 
     kk_rct.center = 900,400
     bom_img = pg.Surface((20, 20))
-    bom_img.set_colorkey((0, 0, 0))#1
-    pg.draw.circle(bom_img, (255, 0, 0), (10, 10), 10)#1
+    bom_img.set_colorkey((0, 0, 0))  # 1
+    pg.draw.circle(bom_img, (255, 0, 0), (10, 10), 10)  # 1
     bomb_boost = 1.2
-    bom_rct = bom_img.get_rect()#1
-    bom_rct.centerx = random.randint(0,WIDTH)#1
-    bom_rct.centery = random.randint(0,HEIGHT)#1
-    vx, vy = +5, +5 #2
+    bom_rct = bom_img.get_rect()  # 1
+    bom_rct.centerx = random.randint(0,WIDTH)  # 1
+    bom_rct.centery = random.randint(0,HEIGHT)  # 1
+    vx, vy = +5, +5  # 2
 
     clock = pg.time.Clock()
     tmr = 0
@@ -80,22 +80,22 @@ def main():
         key_lst =pg.key.get_pressed()
         sum_mv =[0,0]
         for k,tpl in delta.items():
-            if key_lst[k]:#キーが押されたら
+            if key_lst[k]:  # キーが押されたら
                 sum_mv[0] += tpl[0]
                 sum_mv[1] += tpl[1]
 
         screen.blit(kk_img,kk_rct)
-        kk_rct.move_ip(sum_mv[0], sum_mv[1])#こうかとん移動
+        kk_rct.move_ip(sum_mv[0], sum_mv[1])  # こうかとん移動
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_imgs[(sum_mv[0], sum_mv[1])], kk_rct) 
-        bom_rct.move_ip(vx, vy) #2　爆弾移動
+        bom_rct.move_ip(vx, vy)  #2 爆弾移動
         yoko, tate = check_bound(bom_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
-        screen.blit(bom_img,bom_rct)#1
+        screen.blit(bom_img,bom_rct)  # 1
         pg.display.update()
         tmr += 1
         clock.tick(50)
