@@ -13,11 +13,12 @@ def main():
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     bom_img = pg.Surface((20, 20))
-    pg.draw.circle(bom_img, (255, 0, 0), (10, 10), 10)
-    bom_img.set_colorkey((0, 0, 0))
-    bom_rct = bom_img.get_rect()
-    bom_rct.centerx = random.randint(0,WIDTH)
-    bom_rct.centery = random.randint(0,HEIGHT)
+    pg.draw.circle(bom_img, (255, 0, 0), (10, 10), 10)#1
+    bom_img.set_colorkey((0, 0, 0))#1
+    bom_rct = bom_img.get_rect()#1
+    bom_rct.centerx = random.randint(0,WIDTH)#1
+    bom_rct.centery = random.randint(0,HEIGHT)#1
+    vx, vy = +5, +5 #2
 
     clock = pg.time.Clock()
     tmr = 0
@@ -28,10 +29,11 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
-        screen.blit(bom_img,bom_rct)
+        bom_rct.move_ip(vx, vy) #2　爆弾移動
+        screen.blit(bom_img,bom_rct)#1
         pg.display.update()
         tmr += 1
-        clock.tick(10)
+        clock.tick(50)
 
 
 if __name__ == "__main__":
