@@ -61,6 +61,12 @@ def main():
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, [900, 400])
         bom_rct.move_ip(vx, vy) #2　爆弾移動
+        yoko, tate = check_bound(bom_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
+            
         screen.blit(bom_img,bom_rct)#1
         pg.display.update()
         tmr += 1
