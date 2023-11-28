@@ -24,11 +24,29 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate
 
+def kokaton_rotate(kk_img: pg.Surface): 
+    kk_imgs = {}
+    kk_mv = [(0, +5), (+5, +5), (+5, 0), (+5, -5), (0, -5), (-5, -5), (-5, 0), (-5, +5), (0, 0)]  # 移動量のタプルのリスト
+    angle = -90  
+    flip = True
+    for k in kk_mv[:8]:
+        if angle > 90:  
+            angle -= 180  
+            flip = False  
+        kk = kk_img
+        kk = pg.transform.flip(kk, flip, False)
+        kk = pg.transform.rotozoom(kk, angle, 2.0)
+        kk_imgs[k] = kk  
+        angle += 45  
+    kk_imgs[kk_mv[8]] = pg.transform.rotozoom(kk_img, 0, 2.0)
+    return kk_imgs
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
+    kk_imgs = kokaton_rotate(kk_img)
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()
 
@@ -48,7 +66,7 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
-            
+                
         if kk_rct.colliderect(bom_rct):
             print("Game Over")
             return   
