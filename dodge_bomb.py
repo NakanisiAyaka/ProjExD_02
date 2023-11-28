@@ -54,7 +54,7 @@ def main():
     bom_img = pg.Surface((20, 20))
     bom_img.set_colorkey((0, 0, 0))#1
     pg.draw.circle(bom_img, (255, 0, 0), (10, 10), 10)#1
-
+    bomb_boost = 1.2
     bom_rct = bom_img.get_rect()#1
     bom_rct.centerx = random.randint(0,WIDTH)#1
     bom_rct.centery = random.randint(0,HEIGHT)#1
@@ -68,9 +68,14 @@ def main():
                 return
                 
         if kk_rct.colliderect(bom_rct):
+            kk_go = pg.image.load("ex02/fig/8.png")  
+            kk_go = pg.transform.rotozoom(kk_go, 0, 2.0)
+            screen.blit(bg_img, [0, 0])
+            screen.blit(kk_go, kk_rct)
+            pg.display.update()  
+            clock.tick(1)
             print("Game Over")
             return   
-
         screen.blit(bg_img, [0, 0])
         key_lst =pg.key.get_pressed()
         sum_mv =[0,0]
@@ -84,6 +89,7 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])#こうかとん移動
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+        screen.blit(kk_imgs[(sum_mv[0], sum_mv[1])], kk_rct) 
         bom_rct.move_ip(vx, vy) #2　爆弾移動
         yoko, tate = check_bound(bom_rct)
         if not yoko:
