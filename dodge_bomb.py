@@ -5,6 +5,24 @@ import pygame as pg
 
 WIDTH, HEIGHT = 1250, 680
 
+delta = {#3移動量辞書
+    pg.K_UP: (0, -5),#キー：横/縦
+    pg.K_DOWN: (0, +5),
+    pg.K_LEFT: (-5, 0),
+    pg.K_RIGHT: (+5, 0)
+}
+def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
+    """
+    オブジェクトが画面内or画面買いを判定し、真理値タプルを返す関数
+    引数 rct:こうかとんor爆弾Surfaceのrct
+    戻り値:横方向、縦方向はみ出し判定結果（画面内:True/画面外:False）
+    """
+    yoko, tate = True, True
+    if rct.left < 0 or WIDTH < rct.right:
+        yoko = False
+    if rct.top < 0 or HEIGHT < rct.bottom:
+        tate = False
+    return yoko, tate
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -12,6 +30,8 @@ def main():
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_rct = kk_img.get_rect()
+    kk_rct.center = 900,400
     bom_img = pg.Surface((20, 20))
     pg.draw.circle(bom_img, (255, 0, 0), (10, 10), 10)#1
     bom_img.set_colorkey((0, 0, 0))#1
@@ -26,8 +46,19 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
+        key_lst =pg.key.get_pressed()
+        sum_mv =[0,0]
+        for k,tpl in delta.items():
+            if key_lst[k]:#キーが押されたら
+                sum_mv[0] += tpl[0]
+                sum_mv[1] += tpl[1]
+        
 
         screen.blit(bg_img, [0, 0])
+        kk_rct.move_ip(sum_mv[0], sum_mv[1])#こうかとん移動
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, [900, 400])
         bom_rct.move_ip(vx, vy) #2　爆弾移動
         screen.blit(bom_img,bom_rct)#1
