@@ -83,7 +83,6 @@ def main():
             if key_lst[k]:#キーが押されたら
                 sum_mv[0] += tpl[0]
                 sum_mv[1] += tpl[1]
-        kk_rct.move_ip(sum_mv)
 
         screen.blit(kk_img,kk_rct)
         kk_rct.move_ip(sum_mv[0], sum_mv[1])#こうかとん移動
@@ -96,7 +95,6 @@ def main():
             vx *= -1
         if not tate:
             vy *= -1
-        bom_rct.move_ip(vx, vy)
         screen.blit(bom_img,bom_rct)#1
         pg.display.update()
         tmr += 1
